@@ -20,6 +20,16 @@ class Personagem:
     def exibir_detalhes(self):
         return f"Name: {self.get_nome()}\nHP: {self.get_vida()}\nLevel: {self.get_nivel()}"
     
+    def atacar(self,alvo):
+        dano = self.__nivel*2
+        alvo.receber_ataque(dano)
+        print(f"{self.get_nome()} used <<ATTACK>> on {alvo.get_nome()} for {dano} of damage!!")
+    
+    def receber_ataque(self,dano):
+        self.__vida -= dano
+        if self.__vida < 0:
+            self.__vida = 0
+    
 class Heroi(Personagem):
     def __init__(self, nome, vida, nivel,habilidade) -> None:
         super().__init__(nome, vida, nivel)
@@ -42,6 +52,9 @@ class Inimigo(Personagem):
     def exibir_detalhes(self):
         return f"{super().exibir_detalhes()}\nType: {self.get_tipo()}"
 
+
+    
+
 class Jogo:
     """ Classe orquestradora do jogo Python Hero """
 
@@ -57,7 +70,16 @@ class Jogo:
             print(self.inimigo.exibir_detalhes())
 
             input("Press [ENTER] to attack...")
-            escolha = input("Available Actions: (1 - Attack , 2 - Skill)")
+            escolha = input("Available Actions: \n[1] - Attack \n[2] - Skill) \n:")
+            
+            if(escolha == '1'):
+                self.heroi.atacar(self.inimigo)
+            else:
+                print("Choose a valid action")
+        if self.heroi.get_vida() >0:
+            print("Congrants, you won!")
+        else:
+            print("Game Over, Try again!")
 
 # Criar instância do jogo e iniciar batalha
 jogo = Jogo()
