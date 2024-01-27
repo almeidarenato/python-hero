@@ -23,7 +23,7 @@ class Personagem:
     def atacar(self,alvo):
         dano = self.__nivel*2
         alvo.receber_ataque(dano)
-        print(f"{self.get_nome()} used <<ATTACK>> on {alvo.get_nome()} for {dano} of damage!!")
+        print(f"{self.get_nome()} used <<ATTACK ⚔️>> on {alvo.get_nome()} for {dano} of damage!!")
     
     def receber_ataque(self,dano):
         self.__vida -= dano
@@ -40,6 +40,11 @@ class Heroi(Personagem):
 
     def exibir_detalhes(self):
         return f"{super().exibir_detalhes()}\nSkill: {self.get_habilidade()}"
+    
+    def ataque_especial(self,alvo):
+        dano = self.get_nivel()*5
+        alvo.receber_ataque(dano)
+        print(f"{self.get_nome()} used >>{self.get_habilidade()} ⚔️<< on {alvo.get_nome()} for {dano} of damage!!")
     
 class Inimigo(Personagem):
     def __init__(self, nome, vida, nivel,tipo) -> None:
@@ -74,8 +79,13 @@ class Jogo:
             
             if(escolha == '1'):
                 self.heroi.atacar(self.inimigo)
+            elif(escolha == '2'):
+                self.heroi.ataque_especial(self.inimigo)
             else:
                 print("Choose a valid action")
+            if self.inimigo.get_vida() > 0:
+                self.inimigo.atacar(self.heroi)
+            
         if self.heroi.get_vida() >0:
             print("Congrants, you won!")
         else:
